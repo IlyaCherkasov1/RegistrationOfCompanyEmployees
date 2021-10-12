@@ -1,0 +1,107 @@
+<div class="city-edit">
+  <h1>{{title}}</h1>
+
+  <p *ngIf="this.id && ! employee"><em>Loading...</em></p>
+
+  <div class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="surname">Employee surname:</label>
+      <br />
+      <input type="text" id="surname"
+             formControlName="surname" required
+             placeholder="surname..."
+             class="form-control" />
+
+    </div>
+
+    <div class="form-group">
+      <label for="name">Employee name:</label>
+      <br />
+      <input type="text" id="name"
+             formControlName="name" required
+             placeholder="Employee name..."
+             class="form-control" />
+      <div *ngIf="form.get('name').invalid &&
+           (form.get('name').dirty || form.get('name').touched)" class="invalid-feedback">
+        <div *ngIf="form.get('name').errors?.required">
+          Name is required.
+        </div>
+        <div *ngIf="form.get('name').errors?.isDupeField">
+          Name already exists: please choose another.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="middleName">Employee middleName:</label>
+      <br />
+      <input type="text" id="middleName"
+             formControlName="middleName" required
+             placeholder="middleName..."
+             class="form-control" />
+    </div>
+
+
+    <div class="form-group">
+      <label for="employmentDate">Employee employmentDate:</label>
+      <br />
+      <input type="date" id="employmentDate"
+             formControlName="employmentDate" required
+             placeholder="employmentDate..."
+             class="form-control" />
+
+
+      <div class="form-group">
+        <label for="position">Employee position:</label>
+        <br />
+        <input type="text" id="position"
+               formControlName="position" required
+               placeholder="position..."
+               class="form-control" />
+        <div *ngIf="form.get('position').errors?.pattern">
+          periodicity request only certain values.
+        </div>
+
+      </div>
+
+      <div class="form-group" *ngIf="companies">
+        <label for="companyId">Company:</label>
+        <br />
+        <mat-form-field *ngIf="companies">
+          <mat-label>Select a Company...</mat-label>
+          <mat-select id="companyId" formControlName="companyId">
+            <mat-option *ngFor="let company of companies" [value]="company.companyId">
+              {{company.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group commands">
+        <button *ngIf="id" type="submit"
+                (click)="onSubmit()"
+                [disabled]="form.invalid"
+                class="btn btn-success">
+          Save
+        </button>
+
+        <button *ngIf="!id" type="submit"
+                (click)="onSubmit()"
+                [disabled]="form.invalid"
+                class="btn btn-success">
+
+          Create
+
+        </button>
+
+        <button type="button"
+                [routerLink]="['/employees']"
+                class="btn">
+          Cancel
+          <br />
+
+        </button>
+      </div>
+    </div>
+  </div>
